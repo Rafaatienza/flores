@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="es" class="pending">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Feliz día de las flores amarillas · 21 de septiembre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Figtree:wght@400;600&display=swap">
+<noscript><style>html.pending .stage{visibility:visible}</style></noscript>
+<style>
+:root{
+  color-scheme: light;
+  /* cielo */
+  --sky-1:#a6daf4; --sky-2:#dcf1f6; --sky-3:#fff0bd;
+  --ink:#2a2110; --ink-soft:#4a3e22;
+  /* flores */
+  --sun-1:#ffdf2b; --sun-2:#ffc905; --sun-edge:#d69500; --sun-core:#7a3e06; --sun-ring:#f2a900; --sun-seed:#ffe08a;
+  --btn-bg:#ffd21f; --btn-bg-hover:#ffc400; --btn-ink:#2a2110; --focus:#1d5fa8;
+  /* suelo */
+  --soil-1:#6e4623; --soil-2:#472c16; --speck-d:#3a2410; --speck-l:#8c5e34; --stone:#9c8b76; --stone-hi:#c4b5a0;
+  --grass:#5ea63a; --blade-1:#6fba43; --blade-2:#4d9231; --root:#f1e2ba;
+  /* planta */
+  --vine:#4a9a37; --leaf-1:#59ae3f; --leaf-2:#3f8b31; --vein:rgba(255,255,255,.4); --glow:#ffd84d;
+  /* cartel */
+  --wood:#cf9d5c; --wood-edge:#8b5f2a; --wood-ink:#2f2110; --grain:rgba(70,40,10,.18); --stake:#a87a44; --nail:#5a3f1e;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --sky-1:#121838; --sky-2:#2a2a5c; --sky-3:#6a4870;
+    --ink:#fdf2d2; --ink-soft:#e4d6ad;
+    --btn-bg-hover:#ffe066; --focus:#ffe27a;
+    --soil-1:#3d2513; --soil-2:#1f1209; --speck-d:#150b05; --speck-l:#5c3b1f; --stone:#62564a; --stone-hi:#87786a;
+    --grass:#4a8934; --blade-1:#58a23b; --blade-2:#3d792b; --root:#e6d3a3;
+    --vine:#5aa845; --leaf-1:#5fb444; --leaf-2:#458e34;
+    --wood:#b98549; --wood-edge:#7a5324; --stake:#96692f;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --sky-1:#121838; --sky-2:#2a2a5c; --sky-3:#6a4870;
+  --ink:#fdf2d2; --ink-soft:#e4d6ad;
+  --btn-bg-hover:#ffe066; --focus:#ffe27a;
+  --soil-1:#3d2513; --soil-2:#1f1209; --speck-d:#150b05; --speck-l:#5c3b1f; --stone:#62564a; --stone-hi:#87786a;
+  --grass:#4a8934; --blade-1:#58a23b; --blade-2:#3d792b; --root:#e6d3a3;
+  --vine:#5aa845; --leaf-1:#5fb444; --leaf-2:#458e34;
+  --wood:#b98549; --wood-edge:#7a5324; --stake:#96692f;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{
+  margin:0; min-height:100vh; min-height:100dvh;
+  background:var(--sky-1); color:var(--ink);
+  font-family:'Figtree',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ── Escenario: todo el viewport es el cielo y el suelo ── */
+.stage{
+  position:relative; display:flex; flex-direction:column;
+  min-height:100vh; min-height:100dvh; overflow:hidden;
+  background:linear-gradient(to bottom,var(--sky-1) 0%,var(--sky-2) 46%,var(--sky-3) 74%);
+}
+html.pending .stage{visibility:hidden}
+
+.copy{
+  position:relative; z-index:1; width:100%; max-width:44rem; margin:0 auto;
+  padding:calc(clamp(20px,5vw,44px) + env(safe-area-inset-top,0px))
+          max(clamp(20px,6vw,48px), env(safe-area-inset-right,0px)) 0
+          max(clamp(20px,6vw,48px), env(safe-area-inset-left,0px));
+}
+.title{
+  font-family:'Caprasimo','Cooper Black',Georgia,serif; font-weight:400;
+  font-size:clamp(2.05rem,1.2rem + 3.6vw,3.1rem); line-height:1.06;
+  margin:0 0 1.1rem; color:var(--ink); text-wrap:balance;
+}
+.msg{
+  font-size:clamp(1rem,.95rem + .4vw,1.15rem); line-height:1.6;
+  margin:0 0 1rem; color:var(--ink-soft); text-wrap:pretty;
+}
+.sign{
+  font-family:'Caprasimo','Cooper Black',Georgia,serif; font-weight:400;
+  font-size:1.5rem; line-height:1.2; margin:0 0 1.4rem; min-height:1.2em; color:var(--ink);
+}
+
+/* texto que se va rellenando: todo ocupa su sitio desde el principio, las letras se encienden una a una */
+.w{display:inline-block;white-space:nowrap}
+.ch{opacity:0;transition:opacity .16s ease-out}
+.ch.on{opacity:1}
+.ch.cur{position:relative}
+.ch.cur::after{
+  content:""; position:absolute; left:100%; top:.1em; height:.92em; width:.075em; min-width:2px; margin-left:1px;
+  background:currentColor; animation:blink 1s steps(1) infinite;
+}
+@keyframes blink{50%{opacity:0}}
+
+.replay{
+  appearance:none; border:0; cursor:pointer;
+  font:600 1rem/1 'Figtree',system-ui,sans-serif; color:var(--btn-ink); background:var(--btn-bg);
+  padding:.85rem 1.35rem; border-radius:999px; box-shadow:0 2px 0 rgba(0,0,0,.2);
+  opacity:0; visibility:hidden; transform:translateY(6px);
+  transition:opacity .5s ease,transform .5s ease,background-color .2s ease,visibility 0s linear .5s;
+}
+.replay.show{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+.replay:hover{background:var(--btn-bg-hover)}
+.replay:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+
+.scene{position:relative;flex:1 0 auto;min-height:min(112vw,62dvh)}
+.scene svg{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:visible}
+
+/* pantallas anchas: texto a la izquierda, planta a la derecha */
+@media (min-aspect-ratio: 3/2) and (min-width: 760px){
+  .stage{display:block}
+  .scene{position:absolute;inset:0 0 0 40%;min-height:0}
+  .copy{
+    margin:0; max-width:none; width:auto;
+    padding:calc(clamp(24px,10.5dvh,120px) + env(safe-area-inset-top,0px)) 0 0
+            max(clamp(28px,5vw,80px), env(safe-area-inset-left,0px));
+  }
+  .copy > *{max-width:min(36rem,43vw)}
+  .title{font-size:clamp(2rem,6.4dvh,4.3rem)}
+  .msg{font-size:clamp(.95rem,2.3dvh,1.2rem)}
+}
+
+/* ── SVG ── */
+.soil-shape{fill:url(#soilGrad)}
+.grass-line{fill:none;stroke:var(--grass);stroke-width:12;stroke-linecap:round}
+.speck{fill:var(--speck-d)} .speck.l{fill:var(--speck-l)}
+.stone{fill:var(--stone)} .stone-hi{fill:var(--stone-hi)}
+.blade{fill:var(--blade-1);transform-box:fill-box;transform-origin:50% 100%}
+.blade.b2{fill:var(--blade-2)}
+.root{fill:none;stroke:var(--root);stroke-linecap:round;stroke-linejoin:round}
+.vine,.stem{fill:none;stroke:var(--vine);stroke-linecap:round;stroke-linejoin:round}
+.draw{stroke-dasharray:1 1.02;stroke-dashoffset:0}
+.leafshape{fill:var(--leaf-1)} .leafshape.b{fill:var(--leaf-2)}
+.vein{fill:none;stroke:var(--vein);stroke-width:1.1;stroke-linecap:round}
+.petal{stroke:var(--sun-edge);stroke-width:.7;stroke-linejoin:round}
+.p1{fill:var(--sun-1)} .p2{fill:var(--sun-2)}
+.ring{fill:var(--sun-ring)} .core{fill:var(--sun-core)} .seed{fill:var(--sun-seed)}
+.flower,.leaf{transform-origin:0 0}
+#heart{transform-origin:300px 340px}
+#sign{transform-box:fill-box;transform-origin:50% 100%}
+.board{fill:var(--wood);stroke:var(--wood-edge);stroke-width:2.5}
+.stake{fill:var(--stake);stroke:var(--wood-edge);stroke-width:1.5}
+.grain{fill:none;stroke:var(--grain);stroke-width:1.6;stroke-linecap:round}
+.nail{fill:var(--nail)}
+.sign-text{font-family:'Caprasimo','Cooper Black',Georgia,serif;font-size:29px;fill:var(--wood-ink)}
+
+/* ── Animación (una sola secuencia) ── */
+@keyframes rise{from{transform:translateY(260px)}to{transform:none}}
+@keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes pop{from{transform:scale(.3) rotate(-10deg);opacity:0}to{transform:none;opacity:1}}
+@keyframes leafIn{from{transform:scale(0)}to{transform:scale(1)}}
+@keyframes bloom{from{transform:scale(0) rotate(-70deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes beat{
+  0%,100%{transform:scale(1)} 10%{transform:scale(1.035)} 20%{transform:scale(1)}
+  30%{transform:scale(1.022)} 42%{transform:scale(1)}
+}
+.play #soil{animation:rise 1.4s cubic-bezier(.2,.8,.25,1) var(--d,.3s) both}
+.play .blade{animation:grow .55s cubic-bezier(.3,1.4,.5,1) var(--d,0s) both}
+.play .draw{animation:draw var(--t,1s) var(--ease,ease-in-out) var(--d,0s) both}
+.play #sign{animation:pop .7s cubic-bezier(.34,1.56,.64,1) var(--d,1.9s) both}
+.play .leaf{animation:leafIn .6s cubic-bezier(.34,1.4,.64,1) var(--d,0s) both}
+.play .flower{animation:bloom .8s cubic-bezier(.34,1.56,.64,1) var(--d,0s) both}
+.play #glow{animation:fade 1.8s ease-out var(--d,7.9s) both}
+.play.done #heart{animation:beat 1.5s ease-in-out 3}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important}
+  .ch{opacity:1}
+  .ch.cur::after{display:none}
+  .replay{display:none}
+}
+</style>
+</head>
+<body>
+<main class="stage" id="stage">
+
+  <section class="copy">
+    <h1 class="title" id="title"><span class="sr-only"></span><span class="typed" aria-hidden="true"></span></h1>
+    <p class="msg" id="msg"><span class="sr-only"></span><span class="typed" aria-hidden="true"></span></p>
+    <p class="sign" id="sign"><span class="sr-only"></span><span class="typed" aria-hidden="true"></span></p>
+    <button class="replay" id="replay" type="button">Ver de nuevo</button>
+  </section>
+
+  <div class="scene">
+    <svg id="scene" viewBox="0 0 600 660" preserveAspectRatio="xMidYMax meet" role="img"
+         aria-label="Una planta crece desde la tierra y sus flores amarillas forman un corazón">
+      <defs>
+        <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0" style="stop-color:var(--glow);stop-opacity:.6"/>
+          <stop offset="1" style="stop-color:var(--glow);stop-opacity:0"/>
+        </radialGradient>
+        <linearGradient id="soilGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" style="stop-color:var(--soil-1)"/>
+          <stop offset="1" style="stop-color:var(--soil-2)"/>
+        </linearGradient>
+      </defs>
+
+      <path id="edgeProbe" fill="none" stroke="none"
+            d="M0 474 C 80 466, 160 476, 240 470 C 270 468, 285 462, 300 461 C 315 462, 330 468, 360 470 C 440 476, 520 466, 600 474"/>
+
+      <ellipse id="glow" cx="300" cy="200" rx="290" ry="260" fill="url(#glowGrad)"/>
+
+      <g id="soil">
+        <path class="soil-shape"
+              d="M-2000 474 L0 474 C 80 466, 160 476, 240 470 C 270 468, 285 462, 300 461 C 315 462, 330 468, 360 470 C 440 476, 520 466, 600 474 L2600 474 L2600 720 L-2000 720 Z"/>
+        <g id="specks"></g>
+        <g id="stones"></g>
+        <path class="grass-line"
+              d="M-2000 474 L0 474 C 80 466, 160 476, 240 470 C 270 468, 285 462, 300 461 C 315 462, 330 468, 360 470 C 440 476, 520 466, 600 474 L2600 474"/>
+      </g>
+      <g id="blades"></g>
+
+      <g id="roots"></g>
+
+      <g id="sign">
+        <rect class="stake" x="466" y="436" width="8" height="48" rx="2"/>
+        <rect class="board" x="408" y="390" width="124" height="50" rx="8"/>
+        <path class="grain" d="M418 398 H522 M418 432 H522"/>
+        <circle class="nail" cx="419" cy="401" r="2.4"/><circle class="nail" cx="521" cy="401" r="2.4"/>
+        <text class="sign-text" x="470" y="427" text-anchor="middle">21 / 09</text>
+      </g>
+
+      <path id="stem" class="stem draw" pathLength="1" stroke-width="6" d="M300 468 C 297 430, 304 384, 300 340"/>
+      <g id="stemLeaves"></g>
+
+      <g id="heart">
+        <g id="vines"></g>
+        <g id="leaves"></g>
+        <g id="flowers"></g>
+      </g>
+    </svg>
+  </div>
+
+</main>
+
+<script>
+(() => {
+  'use strict';
+
+  /* ── Texto: edítalo a tu gusto ───────────────────────────── */
+  const COPY = {
+    title: 'Feliz día de las flores amarillas',
+    msg: 'Bueno amorcito aunque sea un poco tarde quería regalarte flores amarillas, se que no es de la manera que pensabas pero espero que lo aceptes igualmente. Eres la persona que más aprecio en mi vida y quiero que sepas que por más que no enfademos o tengamos problemas jamás pensaré en soltarte porque tu tienes que cuidar a tu bb chiquito por lo que más quieras en el mundo ¿okey? Además no me puedes dejar porque somos inseparables y siempre lo seremos.',
+    sign: 'Con mucho amor, tu amorcito.'
+  };
+
+  /* ── Tiempos de la animación (segundos) ──────────────────── */
+  const T = {
+    soil: 0.3, grass: 1.5, sign: 1.9,
+    root: 1.7, lateral: 2.2, rootlet: 2.9,
+    stem: 3.7, stemDur: 1.0,
+    vine: 4.7, vineDur: 4.0,
+    glow: 7.9, done: 9.1, text: 2.0
+  };
+
+  /* ── Utilidades ──────────────────────────────────────────── */
+  const NS = 'http://www.w3.org/2000/svg';
+  const $ = (id) => document.getElementById(id);
+  const make = (tag, attrs, parent) => {
+    const el = document.createElementNS(NS, tag);
+    for (const k in attrs) el.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(el);
+    return el;
+  };
+  const vars = (el, o) => { for (const k in o) el.style.setProperty(k, o[k]); return el; };
+  const f1 = (n) => Math.round(n * 10) / 10;
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      let t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  const rnd = mulberry32(2109); // 21/09, para que la planta salga siempre igual
+
+  /* ── Suelo: motas, piedras y hierba ──────────────────────── */
+  const gSpecks = $('specks'), gStones = $('stones'), gBlades = $('blades');
+  for (let i = 0; i < 280; i++) {
+    const x = -1300 + rnd() * 3200, y = 492 + rnd() * 200, rx = 1.2 + rnd() * 3.2;
+    make('ellipse', {
+      cx: f1(x), cy: f1(y), rx: f1(rx), ry: f1(rx * (0.5 + rnd() * 0.35)),
+      class: 'speck' + (rnd() < 0.38 ? ' l' : '')
+    }, gSpecks);
+  }
+  for (let i = 0; i < 30; i++) {
+    const x = -1300 + rnd() * 3200, y = 512 + rnd() * 160, w = 6 + rnd() * 9;
+    if (x > 120 && x < 480) continue; // dejamos limpia la zona de las raíces
+    make('ellipse', { cx: f1(x), cy: f1(y), rx: f1(w), ry: f1(w * 0.68), class: 'stone' }, gStones);
+    make('ellipse', { cx: f1(x - w * 0.25), cy: f1(y - w * 0.22), rx: f1(w * 0.42), ry: f1(w * 0.22), class: 'stone-hi' }, gStones);
+  }
+
+  const probe = $('edgeProbe'), plen = probe.getTotalLength(), edge = [];
+  for (let i = 0; i <= 240; i++) edge.push(probe.getPointAtLength(plen * i / 240));
+  const surfaceY = (x) => {
+    if (x <= 0 || x >= 600) return 474;
+    let lo = 0, hi = edge.length - 1;
+    while (hi - lo > 1) { const m = (lo + hi) >> 1; if (edge[m].x < x) lo = m; else hi = m; }
+    const a = edge[lo], b = edge[hi];
+    return a.y + (b.y - a.y) * ((x - a.x) / ((b.x - a.x) || 1));
+  };
+  for (let x = -1250; x <= 1850; x += 7 + rnd() * 5) {
+    const y = surfaceY(x) + 3, h = 9 + rnd() * 17, lean = (rnd() - 0.5) * 12, w = 1.8 + rnd() * 1.4;
+    const d = `M${f1(x - w)} ${f1(y)} Q${f1(x + lean * 0.35)} ${f1(y - h * 0.62)} ${f1(x + lean)} ${f1(y - h)} ` +
+              `Q${f1(x + lean * 0.35 + 2)} ${f1(y - h * 0.5)} ${f1(x + w)} ${f1(y)} Z`;
+    const b = make('path', { d, class: 'blade' + (rnd() < 0.5 ? ' b2' : '') }, gBlades);
+    vars(b, { '--d': (T.grass + Math.min(Math.abs(x - 300) * 0.0011, 1.2)).toFixed(2) + 's' });
+  }
+
+  vars($('soil'), { '--d': T.soil + 's' });
+  vars($('sign'), { '--d': T.sign + 's' });
+  vars($('glow'), { '--d': T.glow + 's' });
+
+  /* ── Raíces ──────────────────────────────────────────────── */
+  const gRoots = $('roots');
+  [
+    ['M300 466 C 298 500, 306 530, 300 562 C 296 588, 302 614, 298 642', 5.6, T.root, 1.3],
+    ['M300 488 C 270 494, 240 500, 210 520 C 195 530, 185 545, 172 552', 3.8, T.lateral, 1.0],
+    ['M300 492 C 330 498, 362 502, 390 522 C 405 533, 418 546, 432 556', 3.8, T.lateral + 0.1, 1.0],
+    ['M303 530 C 272 538, 250 554, 226 576 C 212 588, 204 602, 188 612', 3.6, T.lateral + 0.35, 1.0],
+    ['M303 534 C 334 542, 354 558, 378 580 C 392 592, 398 604, 414 616', 3.6, T.lateral + 0.45, 1.0],
+    ['M299 578 C 280 588, 266 602, 248 620', 3.2, T.lateral + 0.75, 0.9],
+    ['M299 582 C 320 592, 336 606, 352 624', 3.2, T.lateral + 0.85, 0.9],
+    ['M232 507 C 228 520, 220 530, 214 544', 2.2, T.rootlet, 0.7],
+    ['M196 532 C 186 532, 176 538, 166 536', 2, T.rootlet + 0.1, 0.6],
+    ['M368 508 C 372 521, 380 531, 386 545', 2.2, T.rootlet + 0.15, 0.7],
+    ['M262 549 C 256 561, 254 573, 248 585', 2.2, T.rootlet + 0.25, 0.7],
+    ['M405 534 C 415 534, 425 540, 435 538', 2, T.rootlet + 0.3, 0.6],
+    ['M215 587 C 208 586, 198 588, 192 598', 2, T.rootlet + 0.4, 0.6],
+    ['M342 551 C 348 563, 350 575, 356 587', 2.2, T.rootlet + 0.5, 0.7],
+    ['M389 591 C 397 589, 409 591, 415 601', 2, T.rootlet + 0.6, 0.6]
+  ].forEach(([d, w, delay, dur]) => {
+    const p = make('path', { d, pathLength: 1, class: 'root draw', 'stroke-width': w }, gRoots);
+    vars(p, { '--d': delay.toFixed(2) + 's', '--t': dur + 's' });
+  });
+
+  /* ── Tallo ───────────────────────────────────────────────── */
+  vars($('stem'), { '--d': T.stem + 's', '--t': T.stemDur + 's', '--ease': 'ease-out' });
+
+  /* ── Formas: hoja y flor ─────────────────────────────────── */
+  const leafPath = (l) =>
+    `M0 0 C ${f1(l * 0.24)} ${f1(-l * 0.3)}, ${f1(l * 0.66)} ${f1(-l * 0.34)}, ${f1(l)} ${f1(-l * 0.14)} ` +
+    `C ${f1(l * 0.72)} ${f1(l * 0.12)}, ${f1(l * 0.28)} ${f1(l * 0.18)}, 0 0 Z`;
+  const veinPath = (l) => `M0 0 C ${f1(l * 0.3)} ${f1(-l * 0.08)}, ${f1(l * 0.6)} ${f1(-l * 0.1)}, ${f1(l * 0.9)} ${f1(-l * 0.13)}`;
+  const petalPath = (r) =>
+    `M0 0 C ${f1(-0.46 * r)} ${f1(-0.22 * r)}, ${f1(-0.52 * r)} ${f1(-0.86 * r)}, 0 ${f1(-r)} ` +
+    `C ${f1(0.52 * r)} ${f1(-0.86 * r)}, ${f1(0.46 * r)} ${f1(-0.22 * r)}, 0 0 Z`;
+
+  const gStemLeaves = $('stemLeaves');
+  [
+    { tr: 'translate(301 424) rotate(-28)', delay: 4.1, len: 48, alt: false },
+    { tr: 'translate(299 396) scale(-1 1) rotate(-32)', delay: 4.35, len: 44, alt: true }
+  ].forEach((s) => {
+    const o = make('g', { transform: s.tr }, gStemLeaves);
+    const g = make('g', { class: 'leaf' }, o);
+    vars(g, { '--d': s.delay + 's' });
+    make('path', { d: leafPath(s.len), class: 'leafshape' + (s.alt ? ' b' : '') }, g);
+    make('path', { d: veinPath(s.len), class: 'vein' }, g);
+  });
+
+  /* ── El corazón: dos guías que suben desde el tallo y flores en fila ── */
+  const buildHeart = () => {
+    const S = 10.5, CX = 300, BASE = 340, Y0 = BASE - 17 * S, HCY = 205;
+    const hp = (t) => ({
+      x: CX + S * 16 * Math.pow(Math.sin(t), 3),
+      y: Y0 - S * (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t))
+    });
+    const M = 720, pts = [];
+    let acc = 0;
+    for (let i = 0; i <= M; i++) {
+      const p = hp(Math.PI * (1 - i / M)); // de la punta de abajo a la hendidura de arriba
+      if (i) acc += Math.hypot(p.x - pts[i - 1].x, p.y - pts[i - 1].y);
+      p.len = acc;
+      pts.push(p);
+    }
+    const total = acc;
+    const at = (f) => {
+      const target = f * total;
+      let lo = 0, hi = M;
+      while (hi - lo > 1) { const m = (lo + hi) >> 1; if (pts[m].len < target) lo = m; else hi = m; }
+      const a = pts[lo], b = pts[hi], k = (target - a.len) / ((b.len - a.len) || 1);
+      return { x: a.x + (b.x - a.x) * k, y: a.y + (b.y - a.y) * k, tx: b.x - a.x, ty: b.y - a.y };
+    };
+    const normal = (p) => { // normal apuntando hacia fuera del corazón
+      let nx = -p.ty, ny = p.tx;
+      const l = Math.hypot(nx, ny) || 1;
+      nx /= l; ny /= l;
+      if (nx * (p.x - CX) + ny * (p.y - HCY) < 0) { nx = -nx; ny = -ny; }
+      return [nx, ny];
+    };
+    const gV = $('vines'), gL = $('leaves'), gF = $('flowers');
+    const tAt = (f) => T.vine + f * T.vineDur;
+
+    // guías (tallos finos) a izquierda y derecha
+    [1, -1].forEach((side) => {
+      const d = 'M' + pts.filter((_, i) => i % 3 === 0)
+        .map((p) => `${f1(side === 1 ? p.x : 2 * CX - p.x)} ${f1(p.y)}`).join(' L');
+      const v = make('path', { d, pathLength: 1, class: 'vine draw', 'stroke-width': 4.5 }, gV);
+      vars(v, { '--d': T.vine + 's', '--t': T.vineDur + 's', '--ease': 'linear' });
+    });
+
+    const leaf = (x, y, angle, len, delay, alt) => {
+      const o = make('g', { transform: `translate(${f1(x)} ${f1(y)}) rotate(${f1(angle)})` }, gL);
+      const g = make('g', { class: 'leaf' }, o);
+      vars(g, { '--d': delay.toFixed(2) + 's' });
+      make('path', { d: leafPath(len), class: 'leafshape' + (alt ? ' b' : '') }, g);
+      make('path', { d: veinPath(len), class: 'vein' }, g);
+    };
+    const flower = (x, y, r, delay) => {
+      const o = make('g', { transform: `translate(${f1(x)} ${f1(y)})` }, gF);
+      const g = make('g', { class: 'flower' }, o);
+      vars(g, { '--d': delay.toFixed(2) + 's' });
+      const n = 8 + Math.floor(rnd() * 3), rot = rnd() * 360, pd = petalPath(r);
+      for (let i = 0; i < n; i++) {
+        make('path', { d: pd, class: 'petal ' + (i % 2 ? 'p2' : 'p1'), transform: `rotate(${f1(rot + i * 360 / n)})` }, g);
+      }
+      make('circle', { r: f1(r * 0.34), class: 'ring' }, g);
+      make('circle', { r: f1(r * 0.24), class: 'core' }, g);
+      for (let i = 0; i < 5; i++) {
+        const a = (rot + i * 72) * Math.PI / 180;
+        make('circle', { cx: f1(Math.cos(a) * r * 0.15), cy: f1(Math.sin(a) * r * 0.15), r: f1(r * 0.045), class: 'seed' }, g);
+      }
+    };
+
+    const N = Math.round(total / 27);
+
+    // hojas entre las flores (detrás)
+    for (let k = 0; k < N; k++) {
+      const f = (k + 0.5) / N, p = at(f), [nx, ny] = normal(p);
+      [1, -1].forEach((side) => {
+        const px = side === 1 ? p.x : 2 * CX - p.x, dx = side === 1 ? nx : -nx;
+        const out = Math.atan2(ny, dx) * 180 / Math.PI;
+        leaf(px, p.y, out + (rnd() - 0.5) * 34, 24 + rnd() * 12, tAt(f) - 0.02, k % 2 === 1);
+        if (k % 3 === 1) leaf(px, p.y, out + 180 + (rnd() - 0.5) * 30, 20 + rnd() * 8, tAt(f) - 0.02, k % 2 === 0);
+      });
+    }
+
+    // flores: una en la punta, parejas subiendo por los dos lados y una en la hendidura
+    for (let k = 0; k <= N; k++) {
+      const f = k / N, p = at(f), single = k === 0 || k === N;
+      const [nx, ny] = normal(p), off = single ? 0 : (k % 2 ? 4 : -3);
+      (single ? [1] : [1, -1]).forEach((side) => {
+        const px = single ? CX : (side === 1 ? p.x + nx * off : 2 * CX - (p.x + nx * off));
+        const py = p.y + ny * off;
+        const r = single ? 21 : 14.5 + rnd() * 4.5;
+        flower(px, py, r, tAt(f) - 0.06 + (side === -1 ? rnd() * 0.07 : 0));
+      });
+    }
+  };
+  buildHeart();
+
+  /* ── Texto que se va rellenando ──────────────────────────── */
+  const build = (id, text) => {
+    const host = $(id).querySelector('.typed');
+    $(id).querySelector('.sr-only').textContent = text;
+    host.textContent = '';
+    const items = [];
+    let word = null;
+    for (const c of Array.from(text)) {
+      if (c === ' ') { host.appendChild(document.createTextNode(' ')); word = null; items.push({ el: null, c }); continue; }
+      if (!word) { word = document.createElement('span'); word.className = 'w'; host.appendChild(word); }
+      const s = document.createElement('span');
+      s.className = 'ch';
+      s.textContent = c;
+      word.appendChild(s);
+      items.push({ el: s, c });
+    }
+    return items;
+  };
+  const lines = { title: build('title', COPY.title), msg: build('msg', COPY.msg), sign: build('sign', COPY.sign) };
+  const allChars = Array.from(document.querySelectorAll('.ch'));
+  const PAUSE = { ',': 140, ':': 170, '.': 320, '!': 320, '?': 320 };
+
+  const stage = $('stage'), replayBtn = $('replay');
+  let run = 0, doneTimer = 0;
+
+  const clearCaret = () => allChars.forEach((c) => c.classList.remove('cur'));
+  const resetText = () => allChars.forEach((c) => c.classList.remove('on', 'cur'));
+  const typeLine = async (items, base, my) => {
+    let prev = null;
+    for (const it of items) {
+      if (my !== run) return false;
+      if (!it.el) continue;
+      if (prev) prev.classList.remove('cur');
+      it.el.classList.add('on', 'cur');
+      prev = it.el;
+      await wait(base * (0.7 + Math.random() * 0.6) + (PAUSE[it.c] || 0));
+    }
+    return true;
+  };
+
+  const play = async () => {
+    const my = ++run;
+    clearTimeout(doneTimer);
+    stage.classList.remove('play', 'done');
+    replayBtn.classList.remove('show');
+    resetText();
+    void stage.offsetWidth; // reinicia las animaciones CSS
+    stage.classList.add('play');
+    doneTimer = setTimeout(() => { if (my === run) stage.classList.add('done'); }, T.done * 1000);
+
+    await wait(T.text * 1000);
+    if (my !== run || !(await typeLine(lines.title, 46, my))) return;
+    await wait(320);
+    if (my !== run || !(await typeLine(lines.msg, 21, my))) return;
+    await wait(380);
+    if (my !== run || !(await typeLine(lines.sign, 70, my))) return;
+    await wait(1400);
+    if (my !== run) return;
+    clearCaret();
+    replayBtn.classList.add('show');
+  };
+
+  replayBtn.addEventListener('click', play);
+
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const start = () => {
+    document.documentElement.classList.remove('pending');
+    if (reduce) { allChars.forEach((c) => c.classList.add('on')); return; }
+    play();
+  };
+  Promise.race([document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve(), wait(900)]).then(start);
+})();
+</script>
+</body>
+</html>
